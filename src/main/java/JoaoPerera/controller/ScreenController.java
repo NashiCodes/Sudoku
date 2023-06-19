@@ -1,5 +1,8 @@
 package JoaoPerera.controller;
 
+import JoaoPerera.model.Board;
+import JoaoPerera.persistence.BoardPersistence;
+import JoaoPerera.persistence.Persistence;
 import JoaoPerera.view.Screen;
 
 import java.awt.event.WindowEvent;
@@ -14,12 +17,16 @@ public class ScreenController implements WindowListener {
     }
     @Override
     public void windowOpened(WindowEvent e) {
+        Persistence<Board> boardPersistence = new BoardPersistence();
+        Board board = boardPersistence.load();
+        screen.loadBoard(board);
         System.out.println("Opened");
     }
 
     @Override
     public void windowClosing(WindowEvent e) {
-
+        Persistence<Board> boardPersistence = new BoardPersistence();
+        boardPersistence.save(screen.getBoard());
     }
 
     @Override

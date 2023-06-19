@@ -1,7 +1,9 @@
 package JoaoPerera;
 
+import JoaoPerera.view.Screen;
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        Screen screen = new Screen();
+        screen.display();
     }
 }

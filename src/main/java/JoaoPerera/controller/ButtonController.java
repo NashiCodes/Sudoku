@@ -17,12 +17,8 @@ public class ButtonController implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         switch (text) {
-            case "back":
-                screen.back();
-                break;
-            case "check":
-                screen.check();
-                break;
+            case "back" -> screen.back();
+            case "check" -> screen.check();
         }
     }
 }

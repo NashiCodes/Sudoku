@@ -16,6 +16,19 @@ public class Board {
         }
     }
 
+    public Board(int level) {
+        this.board = new ArrayList<>();
+        for (int row = 0; row < 9; row++) {
+            List<Integer> rowList = new ArrayList<>();
+            for (int column = 0; column < 9; column++) {
+                rowList.add(0);
+            }
+            this.board.add(rowList);
+        }
+
+        this.generateBoard(level);
+    }
+
     public void setBoard(List<List<Integer>> board) {
         this.board = board;
     }

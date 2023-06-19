@@ -14,9 +14,9 @@ public class LevelController implements ActionListener {
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals("Easy")) screen.easy();
-        else if (e.getActionCommand().equals("Medium")) screen.medium();
-        else if (e.getActionCommand().equals("Hard")) screen.hard();
+        if (e.getActionCommand().equals("Easy")) screen.setEasy();
+        else if (e.getActionCommand().equals("Medium")) screen.setMedium();
+        else if (e.getActionCommand().equals("Hard")) screen.setHard();
 
         screen.instructions();
     }

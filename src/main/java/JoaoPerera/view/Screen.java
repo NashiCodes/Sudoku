@@ -24,7 +24,6 @@ public class Screen extends JFrame {
 
     public Screen() {
         super("Sudoku");
-        this.board = new Board();
     }
 
     public void display() {
@@ -99,15 +98,15 @@ public class Screen extends JFrame {
         return welcome;
     }
 
-    public void easy() {
+    public void setEasy() {
         this.board = new Board(60);
     }
 
-    public void medium() {
+    public void setMedium() {
         this.board = new Board(40);
     }
 
-    public void hard() {
+    public void setHard() {
         this.board = new Board(20);
     }
 
@@ -134,7 +133,7 @@ public class Screen extends JFrame {
                 textField.setForeground(Color.WHITE);
 
                 textField.setHorizontalAlignment(JTextField.CENTER);
-                textField.setText(String.valueOf(this.board.getBoardValue(row, column)));
+                textField.setText(String.valueOf(this.board.getValue(row, column)));
                 textField.setEditable(true);
                 textField.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
 
@@ -176,7 +175,7 @@ public class Screen extends JFrame {
     }
 
     public void check() {
-        if (this.board.isBoardValid()) {
+        if (this.board.isSolved()) {
             JOptionPane.showMessageDialog(this, "Congratulations! You won!");
         } else {
             JOptionPane.showMessageDialog(this, "You have some mistakes. Try again!");
@@ -184,7 +183,7 @@ public class Screen extends JFrame {
     }
 
     public void updateBoard(Board board) {
-        this.board = board;
+        this.board.setBoard(board.getBoard());
         showBoard();
     }
 

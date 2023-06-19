@@ -18,7 +18,7 @@ public class LevelController implements ActionListener {
         else if (e.getActionCommand().equals("Medium")) screen.medium();
         else if (e.getActionCommand().equals("Hard")) screen.hard();
 
-        screen.showBoard();
+        screen.instructions();
     }
 
 }

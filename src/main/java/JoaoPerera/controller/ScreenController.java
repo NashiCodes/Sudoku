@@ -2,8 +2,7 @@ package JoaoPerera.controller;
 
 import JoaoPerera.view.Screen;
 
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.*;
 
 public class ScreenController implements WindowListener {
 

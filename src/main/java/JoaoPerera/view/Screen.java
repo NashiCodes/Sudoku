@@ -1,5 +1,7 @@
 package JoaoPerera.view;
 
+import JoaoPerera.controller.ButtonController;
+import JoaoPerera.controller.FieldController;
 import JoaoPerera.controller.LevelController;
 import JoaoPerera.controller.ScreenController;
 import JoaoPerera.model.Board;
@@ -7,7 +9,8 @@ import JoaoPerera.model.Board;
 import javax.swing.*;
 import java.awt.*;
 
-import static javax.swing.BoxLayout.*;
+import static javax.swing.BoxLayout.X_AXIS;
+import static javax.swing.BoxLayout.Y_AXIS;
 
 public class Screen extends JFrame {
 
@@ -15,7 +18,7 @@ public class Screen extends JFrame {
     private final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private final Dimension preferredScreenSize = new Dimension(450, 200);
     private final Dimension boardSize = new Dimension(550, 350);
-    private final Dimension buttonSize = new Dimension(100, 100);
+    private final Dimension buttonSize = new Dimension(60, 60);
     private final Color backgroundColor = new Color(25, 30, 35);
     private final Color buttonColor = new Color(50, 55, 60);
 
@@ -134,16 +137,55 @@ public class Screen extends JFrame {
                 textField.setText(String.valueOf(this.board.getBoardValue(row, column)));
                 textField.setEditable(true);
                 textField.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
+
+                textField.addKeyListener(new FieldController(this, board, row, column, textField));
                 rowPanel.add(textField);
             }
             boardPanel.add(rowPanel);
         }
+
+        JButton back = new JButton("Back");
+        back.addActionListener(new ButtonController(this, "back"));
+        back.setBackground(buttonColor);
+        back.setForeground(Color.WHITE);
+        back.setPreferredSize(buttonSize);
+
+        JButton check = new JButton("Check");
+        check.addActionListener(new ButtonController(this, "check"));
+        check.setBackground(buttonColor);
+        check.setForeground(Color.WHITE);
+        check.setPreferredSize(buttonSize);
+
+        JPanel buttons = new JPanel();
+        buttons.add(back);
+        buttons.add(check);
+        buttons.setBackground(backgroundColor);
+
+        boardPanel.add(buttons, BorderLayout.SOUTH);
 
         this.add(boardPanel);
         this.setSize(boardSize);
         this.setPreferredSize(boardSize);
         this.setLocation(locationWidth(), locationHeight());
         this.pack();
+    }
+
+    public void back() {
+        this.getContentPane().removeAll();
+        display();
+    }
+
+    public void check() {
+        if (this.board.isBoardValid()) {
+            JOptionPane.showMessageDialog(this, "Congratulations! You won!");
+        } else {
+            JOptionPane.showMessageDialog(this, "You have some mistakes. Try again!");
+        }
+    }
+
+    public void updateBoard(Board board) {
+        this.board = board;
+        showBoard();
     }
 
     public void instructions() {

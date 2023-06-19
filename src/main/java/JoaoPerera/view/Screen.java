@@ -1,31 +1,23 @@
 package JoaoPerera.view;
 
-import JoaoPerera.controller.BoardController;
 import JoaoPerera.controller.LevelController;
 import JoaoPerera.controller.ScreenController;
 import JoaoPerera.model.Board;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 
 import static javax.swing.BoxLayout.*;
 
 public class Screen extends JFrame {
 
     private Board board;
-    private Dimension maxScreenSize = new Dimension(600, 600);
-
-    private Dimension minScreenSize = new Dimension(400, 400);
-
-    private Dimension preferredScreenSize = new Dimension(450, 200);
-
-    private Dimension boardSize = new Dimension(600, 600);
-
-    private Dimension buttonSize = new Dimension(100, 100);
-
-    private Color backgroundColor = new Color(25, 30, 35);
-
+    private final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    private final Dimension preferredScreenSize = new Dimension(450, 200);
+    private final Dimension boardSize = new Dimension(550, 350);
+    private final Dimension buttonSize = new Dimension(100, 100);
+    private final Color backgroundColor = new Color(25, 30, 35);
+    private final Color buttonColor = new Color(50, 55, 60);
 
     public Screen() {
         super("Sudoku");
@@ -33,12 +25,11 @@ public class Screen extends JFrame {
     }
 
     public void display() {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        setSize(new Dimension(100 , 100));
+        setSize(new Dimension(100, 100));
         setPreferredSize(preferredScreenSize);
         addWindowListener(new ScreenController(this));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocation(screenSize.width / 2 - preferredScreenSize.width / 2, screenSize.height / 2 - preferredScreenSize.height / 2);
+        setLocation(locationWidth(), locationHeight());
         setVisible(true);
 
         getContentPane().add(Welcome());
@@ -90,7 +81,7 @@ public class Screen extends JFrame {
 
         //add the buttons to the panel
         JPanel buttons = new JPanel();
-        buttons.setLayout(new GridLayout(1, 3 ,5,0));
+        buttons.setLayout(new GridLayout(1, 3, 5, 0));
         buttons.setBackground(backgroundColor);
 
         buttons.add(easy);
@@ -119,26 +110,111 @@ public class Screen extends JFrame {
 
 
     public void showBoard() {
-
+        //Remove all components from the frame
         this.getContentPane().removeAll();
 
-        List<List<Integer>> board = this.board.getBoard();
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, Y_AXIS));
+        //Set the layout of the frame
+        JPanel boardPanel = new JPanel();
+        boardPanel.setLayout(new BoxLayout(boardPanel, Y_AXIS));
+        boardPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        boardPanel.setBackground(backgroundColor);
+
         for (int row = 0; row < 9; row++) {
             JPanel rowPanel = new JPanel();
             rowPanel.setLayout(new BoxLayout(rowPanel, X_AXIS));
             for (int column = 0; column < 9; column++) {
+
                 JTextField textField = new JTextField();
+                textField.setPreferredSize(new Dimension(5, 5));
+                textField.setFont(new Font("Arial", Font.PLAIN, 25));
+                textField.setBackground(backgroundColor);
+                textField.setForeground(Color.WHITE);
+
                 textField.setHorizontalAlignment(JTextField.CENTER);
-                textField.setText(String.valueOf(board.get(row).get(column)));
-                textField.setEditable(false);
+                textField.setText(String.valueOf(this.board.getBoardValue(row, column)));
+                textField.setEditable(true);
+                textField.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
                 rowPanel.add(textField);
             }
-            panel.add(rowPanel);
+            boardPanel.add(rowPanel);
         }
-        this.add(panel);
+
+        this.add(boardPanel);
+        this.setSize(boardSize);
+        this.setPreferredSize(boardSize);
+        this.setLocation(locationWidth(), locationHeight());
         this.pack();
     }
 
+    public void instructions() {
+
+        //Remove all components from the frame
+        this.getContentPane().removeAll();
+
+        JPanel Instruction = new JPanel();
+        Instruction.setLayout(new GridLayout(0, 1, 10, 10));
+        Instruction.setBackground(backgroundColor);
+        Instruction.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        JLabel Instructions = new JLabel("Instructions:");
+        Instructions.setForeground(Color.WHITE);
+        Instructions.setFont(new Font("Arial", Font.PLAIN, 20));
+        Instruction.add(Instructions, BorderLayout.CENTER);
+
+        JLabel Instructions1 = new JLabel("1. Click on the box you want to fill in.");
+        Instructions1.setForeground(Color.WHITE);
+        Instructions1.setFont(new Font("Arial", Font.PLAIN, 15));
+        Instruction.add(Instructions1, BorderLayout.CENTER);
+
+        JLabel Instructions2 = new JLabel("2. Type the number you want to fill in.");
+        Instructions2.setForeground(Color.WHITE);
+        Instructions2.setFont(new Font("Arial", Font.PLAIN, 15));
+        Instruction.add(Instructions2, BorderLayout.CENTER);
+
+        JLabel Instructions3 = new JLabel("3. Press enter to confirm.");
+        Instructions3.setForeground(Color.WHITE);
+        Instructions3.setFont(new Font("Arial", Font.PLAIN, 15));
+        Instruction.add(Instructions3, BorderLayout.CENTER);
+
+        JLabel Instructions4 = new JLabel("4. If you want to delete a number, press backspace.");
+        Instructions4.setForeground(Color.WHITE);
+        Instructions4.setFont(new Font("Arial", Font.PLAIN, 15));
+        Instruction.add(Instructions4, BorderLayout.CENTER);
+
+
+        JLabel Instructions5 = new JLabel("5. If you want to see the solution, press the solution button.");
+        Instructions5.setForeground(Color.WHITE);
+        Instructions5.setFont(new Font("Arial", Font.PLAIN, 15));
+        Instruction.add(Instructions5, BorderLayout.CENTER);
+
+        JLabel Instructions6 = new JLabel("6. If you want to go back to the main menu, press the back button.");
+        Instructions6.setForeground(Color.WHITE);
+        Instructions6.setFont(new Font("Arial", Font.PLAIN, 15));
+        Instruction.add(Instructions6, BorderLayout.CENTER);
+
+        JLabel Instructions7 = new JLabel("7. The number you fill in must be between 1 and 9.");
+        Instructions7.setForeground(Color.WHITE);
+        Instructions7.setFont(new Font("Arial", Font.PLAIN, 15));
+        Instruction.add(Instructions7, BorderLayout.CENTER);
+
+        JButton Continue = new JButton("Continue");
+        Continue.setSize(buttonSize);
+        Continue.setBackground(buttonColor);
+        Continue.setForeground(Color.WHITE);
+        Continue.addActionListener(e -> this.showBoard());
+        Instruction.add(Continue, BorderLayout.SOUTH);
+
+        this.add(Instruction);
+        this.setPreferredSize(boardSize);
+        this.setLocation(locationWidth(), locationHeight());
+        this.pack();
+    }
+
+    public int locationWidth() {
+        return screenSize.width / 2 - boardSize.width / 2;
+    }
+
+    public int locationHeight() {
+        return screenSize.height / 2 - boardSize.height / 2;
+    }
 }

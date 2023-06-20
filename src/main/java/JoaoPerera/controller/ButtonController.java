@@ -19,6 +19,7 @@ public class ButtonController implements ActionListener {
         switch (text) {
             case "back" -> screen.back();
             case "check" -> screen.check();
+            case "solve" -> screen.solve();
         }
     }
 }

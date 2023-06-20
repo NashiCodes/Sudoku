@@ -16,9 +16,13 @@ public class Screen extends JFrame {
 
     private Board board;
     private final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+    private final int width = screenSize.width / 2;
+
+    private final int height = screenSize.height / 2;
     private final Dimension preferredScreenSize = new Dimension(450, 200);
-    private final Dimension boardSize = new Dimension(550, 350);
-    private final Dimension buttonSize = new Dimension(60, 60);
+    private final Dimension boardSize = new Dimension(1000, 600);
+    private final Dimension buttonSize = new Dimension(100, 50);
     private final Color backgroundColor = new Color(25, 30, 35);
     private final Color buttonColor = new Color(50, 55, 60);
 
@@ -31,7 +35,7 @@ public class Screen extends JFrame {
         setPreferredSize(preferredScreenSize);
         addWindowListener(new ScreenController(this));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocation(locationWidth(), locationHeight());
+        setLocation(screenSize.width / 2 - 250, screenSize.height / 2 - height / 2 + 100);
         setVisible(true);
 
         getContentPane().add(Welcome());
@@ -99,7 +103,7 @@ public class Screen extends JFrame {
     }
 
     public void setEasy() {
-        this.board = new Board(60);
+        this.board = new Board(20);
     }
 
     public void setMedium() {
@@ -107,7 +111,7 @@ public class Screen extends JFrame {
     }
 
     public void setHard() {
-        this.board = new Board(20);
+        this.board = new Board(60);
     }
 
 
@@ -134,10 +138,13 @@ public class Screen extends JFrame {
 
                 textField.setHorizontalAlignment(JTextField.CENTER);
                 textField.setText(String.valueOf(this.board.getValue(row, column)));
-                textField.setEditable(true);
                 textField.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
-
                 textField.addKeyListener(new FieldController(this, board, row, column, textField));
+
+                if (this.board.getValue(row, column) != 0) {
+                    textField.setEditable(false);
+                }
+
                 rowPanel.add(textField);
             }
             boardPanel.add(rowPanel);
@@ -155,9 +162,17 @@ public class Screen extends JFrame {
         check.setForeground(Color.WHITE);
         check.setPreferredSize(buttonSize);
 
+        JButton Solve = new JButton("Solve");
+        Solve.addActionListener(new ButtonController(this, "solve"));
+        Solve.setBackground(buttonColor);
+        Solve.setForeground(Color.WHITE);
+        Solve.setPreferredSize(buttonSize);
+
+
         JPanel buttons = new JPanel();
         buttons.add(back);
         buttons.add(check);
+        buttons.add(Solve);
         buttons.setBackground(backgroundColor);
 
         boardPanel.add(buttons, BorderLayout.SOUTH);
@@ -246,8 +261,8 @@ public class Screen extends JFrame {
         Instruction.add(Continue, BorderLayout.SOUTH);
 
         this.add(Instruction);
-        this.setPreferredSize(boardSize);
-        this.setLocation(locationWidth(), locationHeight());
+        this.setPreferredSize(new Dimension(450, 450));
+        this.setLocation(width / 2 +150, height / 2);
         this.pack();
     }
 
@@ -257,5 +272,10 @@ public class Screen extends JFrame {
 
     public int locationHeight() {
         return screenSize.height / 2 - boardSize.height / 2;
+    }
+
+    public void solve() {
+        this.board.solve();
+        showBoard();
     }
 }
